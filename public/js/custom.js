@@ -8,16 +8,18 @@ function addConcepto() {
     }
     else
     {
+        
         var hidden = "hidden";
         var conceptoV = "concepto[]";
         var precioV = "precio[]";
         var x = document.getElementById("myTable").rows.length;
         var click = "funcionEliminar(this,"+x+")";
         var buttonclase = "button";
-        
+        console.log(concepto);
 
+        //$("#cuerpoTabla").append("<tr><td>"+x+"</td><td>"+concepto+"</td><input type="+hidden+" name="+conceptoV+" value="+concepto+"><td>"+precio+"</td><td><button type="+buttonclase+" onclick="+click+">Eliminar</button></td><input type="+hidden+" id="+x+" name="+precioV+" value="+precio+"></tr>");
         $("#cuerpoTabla").append("<tr><td>"+x+"</td><td>"+concepto+"</td><input type="+hidden+" name="+conceptoV+" value="+concepto+"><td>"+precio+"</td><td><button type="+buttonclase+" onclick="+click+">Eliminar</button></td><input type="+hidden+" id="+x+" name="+precioV+" value="+precio+"></tr>");
-        
+        console.log(concepto);
 
         
         var a = parseInt(document.getElementById("total").value);
@@ -35,6 +37,7 @@ function addConcepto() {
         {
             console.log("deuda existente");
             var deudatotal = parseInt(deuda) + parseInt(precio);
+
         }
         
         document.getElementById("totaldeuda").value = deudatotal;
@@ -42,7 +45,10 @@ function addConcepto() {
         //limpia campos y manda al concepto
         document.getElementById('concepto').value = "";
         document.getElementById('costo').value = "";
+        document.getElementById('total').value = "";
         document.getElementById('concepto').focus();
+
+        
     }
     
 }

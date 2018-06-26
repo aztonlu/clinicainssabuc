@@ -64,7 +64,7 @@
           <ul class="list-inline">
             <li>
               <h5>Concepto:</h5>
-              <input type="text" name="concepto" id="concepto">
+              <input type="text" name="concepto" id="concepto" value="">
             </li>
             <li>
               <h5>Costo:</h5>
@@ -72,11 +72,11 @@
             </li>
             <li>
               <button type="button" class="btn btn-success" onclick="addConcepto()">+</button>
-              @if($conceptos == "concepto_vacio")
+              <!--@if($conceptos == "concepto_vacio")
 
               @else
               <button type="button" class="btn btn-info" data-toggle="modal" data-target="#example" >Ver Concepto</button>
-              @endif
+              @endif-->
             </li>
           </ul>
           
@@ -94,12 +94,96 @@
             </table>
             <ul class="list-inline">
               <li>
-                <h5>Total:</h5>
+                <h5>Costo de la sesion:</h5>
               </li>
               <li>
                 <input type="text" name="total" id="total" value="0">
               </li>
             </ul>
+
+            <br><br><br><br>
+                  @if($conceptos == "concepto_vacio")
+                @else
+                  @if(count($conceptos) == 0)
+                      <center><h5>No existen pagos previos</h5></center>
+                @else    
+                  <table class="table" id="myTable">
+                  <thead>
+                    <tr>
+                    
+                    <th>Concepto</th>
+                    <th>precio</th>
+                  </tr>
+                  </thead>
+                  @foreach($conceptos as $concepto)
+                  <tbody>
+                    
+                      <td>{{ $concepto->concepto }}</td>
+                      <td>{{ $concepto->precio }}</td>
+                    
+
+                  </tbody>
+                  @endforeach
+                  @foreach($conceptos as $costofinal)
+                  {{$costofinal->precio}}
+                  @endforeach
+
+
+
+
+                  <!--<th>Total</th>
+                  </tr>
+                  </thead>
+                  @foreach($cuentas as $cuenta)
+                  <tbody>
+                    
+                      <td>{{ $cuenta->deuda }}</td>
+
+                  </tbody>
+                  array_sum($tu_array)
+                  @endforeach-->
+
+
+
+                </table>
+                    @endif
+                @endif
+
+
+
+
+
+
+                @if($total == "deuda_vacia")
+                <input type="text" name="total" id="total">
+              @else
+                @if(count($total) > 0)
+                  <input type="text" name="total" id="total" value="{{ $total }}">
+                @else
+                  <input type="text" name="total" id="total">
+                @endif
+              @endif
+
+
+
+
+
+
+
+                @if(count($costofinal) > 0)
+                <th>Costo total</th>
+                  <input type="text" name="total" id="total" value="{{ $total }}">
+                @endif
+                <br><br>
+
+                @if(count($deuda) > 0)
+                <th>Deuda a la fecha</th>
+                  <input type="text" name="deuda" id="deuda" value="{{ $deuda }}">
+                @endif
+
+
+
+          <br><br>
             <img src="" id="imgC" name="imgC" >
             <input type="hidden" name="image" value="{{ $odontogramas }}">
             <input type="hidden" name="texto64" id="texto64">
@@ -135,7 +219,26 @@
               <button type="button" class="btn btn-success" id="buttonCalculate" onclick="addDeuda()">+</button>
               @if($cuentas == "cuenta_vacio")
               @else
-                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#example1" >Ver Costos</button>
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="" >Ver Costos</button>
+                  <table class="table" id="myTable">
+                  <thead>
+                    <tr>
+                    
+                    <th>Deuda a la fecha</th>
+                    <th>Dejo a Cuenta</th>
+                    <th>Fecha</th>
+                  </tr>
+                  </thead>
+                  @foreach($cuentas as $cuenta)
+                  <tbody>
+                    
+                      <td>{{ $cuenta->deuda }}</td>
+                      <td>{{ $cuenta->cuenta }}</td>
+                      <td>{{ $cuenta->fecha }}</td>
+
+                  </tbody>
+                  @endforeach
+                </table>
               @endif
             </li>
           </ul>    
