@@ -12,7 +12,7 @@
       border:1px solid red;
       background-image: url('{{ $odontogramas }}');
     }
-
+    
   </style>
   <link rel="stylesheet" href="css/custom.css" >
   <link rel="stylesheet" href="css/bootstrap.min.css" >
@@ -29,7 +29,7 @@
         <h4>Paciente : </h4> <h4>{{ $paciente->nombres }} {{ $paciente->apPaterno }} {{ $paciente->apMaterno }}</h4>
       </li>
     </ul>
-
+    
   @elseif($paciente->sexo == "Femenino")
     <ul class="list-inline">
       <li>
@@ -39,8 +39,8 @@
         <h4>Paciente : </h4> <h4>{{ $paciente->nombres }} {{ $paciente->apPaterno }} {{ $paciente->apMaterno }}</h4>
       </li>
     </ul>
-  @endif
-
+  @endif              
+  
   @if($conceptos == "concepto_vacio")
     <form method="POST" action="insertarOdontograma" enctype="multipart/form-data" id="formulario">
       {{ csrf_field() }}
@@ -79,7 +79,7 @@
               @endif-->
             </li>
           </ul>
-
+          
             <table class="table" id="myTable">
               <thead>
                 <tr>
@@ -89,7 +89,7 @@
               </tr>
               </thead>
               <tbody id="cuerpoTabla">
-
+                
               </tbody>
             </table>
             <ul class="list-inline">
@@ -106,21 +106,21 @@
                 @else
                   @if(count($conceptos) == 0)
                       <center><h5>No existen pagos previos</h5></center>
-                @else
+                @else    
                   <table class="table" id="myTable">
                   <thead>
                     <tr>
-
+                    
                     <th>Concepto</th>
                     <th>precio</th>
                   </tr>
                   </thead>
                   @foreach($conceptos as $concepto)
                   <tbody>
-
+                    
                       <td>{{ $concepto->concepto }}</td>
                       <td>{{ $concepto->precio }}</td>
-
+                    
 
                   </tbody>
                   @endforeach
@@ -129,19 +129,6 @@
                   @endforeach
 
 
-
-
-                  <!--<th>Total</th>
-                  </tr>
-                  </thead>
-                  @foreach($cuentas as $cuenta)
-                  <tbody>
-
-                      <td>{{ $cuenta->deuda }}</td>
-
-                  </tbody>
-                  array_sum($tu_array)
-                  @endforeach-->
 
 
 
@@ -154,27 +141,12 @@
 
 
 
-                @if($total == "deuda_vacia")
-                <input type="text" name="total" id="total">
-              @else
-                @if(count($total) > 0)
-                  <input type="text" name="total" id="total" value="{{ $total }}">
-                @else
-                  <input type="text" name="total" id="total">
-                @endif
-              @endif
 
 
 
 
 
 
-
-                @if(count($costofinal) > 0)
-                <th>Costo total</th>
-                  <input type="text" name="total" id="total" value="{{ $total }}">
-                @endif
-                <br><br>
 
                 @if(count($deuda) > 0)
                 <th>Deuda a la fecha</th>
@@ -188,7 +160,7 @@
             <input type="hidden" name="image" value="{{ $odontogramas }}">
             <input type="hidden" name="texto64" id="texto64">
             <input type="hidden" name="dni" id="dni" class="total" value="{{ $paciente->dni }}">
-
+          
         </div>
       </div>
       <div class="col-sm-12">
@@ -205,7 +177,7 @@
                   <input type="text" name="deuda" id="deuda">
                 @endif
               @endif
-
+                
             </li>
             <li>
               <h5>Cuenta:</h5>
@@ -223,7 +195,7 @@
                   <table class="table" id="myTable">
                   <thead>
                     <tr>
-
+                    
                     <th>Deuda a la fecha</th>
                     <th>Dejo a Cuenta</th>
                     <th>Fecha</th>
@@ -231,7 +203,7 @@
                   </thead>
                   @foreach($cuentas as $cuenta)
                   <tbody>
-
+                    
                       <td>{{ $cuenta->deuda }}</td>
                       <td>{{ $cuenta->cuenta }}</td>
                       <td>{{ $cuenta->fecha }}</td>
@@ -241,7 +213,7 @@
                 </table>
               @endif
             </li>
-          </ul>
+          </ul>    
           <!--<table class="table" id="tabla2">
             <thead>
               <tr>
@@ -250,7 +222,7 @@
               </tr>
             </thead>
             <tbody id=¨tablabody¨>
-
+              
             </tbody>
           </table>-->
           <ul class="list-inline">
@@ -260,7 +232,7 @@
             <li>
               <input type="text" name="totaldeuda" id="totaldeuda" value="0">
             </li>
-          </ul>
+          </ul>        
       </div>
   </form>
   <!-- Modal -->
@@ -335,28 +307,28 @@ function handleMouseMove(e){
         ctx.moveTo(lastX,lastY);
         ctx.lineTo(mouseX,mouseY);
         ctx.strokeStyle= "#000";
-        ctx.stroke();
+        ctx.stroke();     
       }
       if(mode=="penRed"){
         ctx.globalCompositeOperation="source-over";
         ctx.moveTo(lastX,lastY);
         ctx.lineTo(mouseX,mouseY);
         ctx.strokeStyle= "#FF0000";
-        ctx.stroke();
+        ctx.stroke();     
       }
       if(mode=="penBlue"){
         ctx.globalCompositeOperation="source-over";
         ctx.moveTo(lastX,lastY);
         ctx.lineTo(mouseX,mouseY);
         ctx.strokeStyle= "#040CF4";
-        ctx.stroke();
+        ctx.stroke();     
       }
       if(mode=="penGreen"){
         ctx.globalCompositeOperation="source-over";
         ctx.moveTo(lastX,lastY);
         ctx.lineTo(mouseX,mouseY);
         ctx.strokeStyle= "#0FF62A";
-        ctx.stroke();
+        ctx.stroke();     
       }
       if(mode=="eraser"){
 
@@ -384,20 +356,20 @@ $("#eraser").click(function(){ mode="eraser"; });
 </script>
 <script>
   function canvasToImg() {
-      var canvas1 = document.getElementById("canvas");
+      var canvas1 = document.getElementById("canvas");        
       if (canvas1.getContext) {
-         var ctx = canvas1.getContext("2d");
-         var myImage = canvas1.toDataURL("image/png");
+         var ctx = canvas1.getContext("2d");                
+         var myImage = canvas1.toDataURL("image/png");      
       }
-      var imageElement = document.getElementById("imgC");
-      imageElement.src = myImage;
+      var imageElement = document.getElementById("imgC");  
+      imageElement.src = myImage;    
       var input64 = document.getElementById("texto64");
       input64.value = canvas1.toDataURL();
       guardar();
 
 
-
-    }
+      
+    }   
 </script>
 </body>
 </html>
