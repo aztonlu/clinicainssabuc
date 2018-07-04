@@ -12,11 +12,11 @@
           @else
             @if(count($cuentas) == 0)
                 <center><h5>No existen pagos previos</h5></center>
-          @else    
+          @else
             <table class="table" id="myTable">
             <thead>
               <tr>
-              
+
               <th>Deuda a la fecha</th>
               <th>Dejo a Cuenta</th>
               <th>Fecha</th>
@@ -24,7 +24,7 @@
             </thead>
             @foreach($cuentas as $cuenta)
             <tbody>
-              
+
                 <td>{{ $cuenta->deuda }}</td>
                 <td>{{ $cuenta->cuenta }}</td>
                 <td>{{ $cuenta->fecha }}</td>
@@ -35,7 +35,7 @@
               @endif
           @endif
 
-          
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

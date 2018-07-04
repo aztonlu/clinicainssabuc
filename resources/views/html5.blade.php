@@ -98,7 +98,7 @@
             </table>
             <ul class="list-inline">
               <li>
-                <h5>Costo de la sesion:</h5>
+                <h5>Costo de la sesión:</h5>
               </li>
               <li>
                 <input type="text" name="total" id="total" value="0">
@@ -127,9 +127,13 @@
 
                   </tbody>
                   @endforeach
+                  <!--este es el listado del arreglo precio-->
+
                   @foreach($conceptos as $costofinal)
+
                   {{$costofinal->precio}}
                   @endforeach
+                  <!--hasta aqui-->
                 </table>
                     @endif
                 @endif
@@ -169,10 +173,10 @@
               <input type="text" name="fechaCuenta" id="fechaCuenta">
             </li>
             <li>
-              <button type="button" class="btn btn-success" id="buttonCalculate" onclick="addDeuda()">+</button>
+              <!--<button type="button" class="btn btn-success" id="buttonCalculate" onclick="addDeuda()">+</button>-->
               @if($cuentas == "cuenta_vacio")
               @else
-                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="" >Ver Costos</button>
+              <!--<button type="button" class="btn btn-warning" data-toggle="modal" data-target="" >Ver Costos</button>-->
                   <table class="table" id="myTable">
                   <thead>
                     <tr>

@@ -12,28 +12,28 @@
           @else
             @if(count($conceptos) == 0)
                 <center><h5>No existen pagos previos</h5></center>
-          @else    
+          @else
             <table class="table" id="myTable">
             <thead>
               <tr>
-              
+
               <th>Concepto</th>
               <th>precio</th>
             </tr>
             </thead>
             @foreach($conceptos as $concepto)
             <tbody>
-              
+
                 <td>{{ $concepto->concepto }}</td>
                 <td>{{ $concepto->precio }}</td>
-              
+
 
             </tbody>
             @endforeach
           </table>
               @endif
           @endif
-          
+
 
 
         </div>
