@@ -83,7 +83,7 @@
               <input type="text" name="fechaCuenta" id="fechaCuenta">
             </li>
             <li>
-              <button type="button" class="btn btn-success" id="buttonCalculate" onclick="addDeuda()">+</button>
+              <!--<button type="button" class="btn btn-success" id="buttonCalculate" onclick="addDeuda()">+</button>-->
               @if($cuentas == "cuenta_vacio")
               @else
                 <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#example1" >Ver Costos</button>
@@ -227,7 +227,7 @@
                 <input type="text" name="deuda" id="deuda" value="{{ $deuda }}">
                 </li>
               @endif
-              
+
 
             </ul>
             <img src="" id="imgC" name="imgC" >
