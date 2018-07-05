@@ -282,14 +282,14 @@ class HomeController extends Controller
     public function mostrarReporte(Request $request)
     {
       $dni = $request->dni;
-      
+
       $paciente = Paciente::where('dni',$dni)->get();
       $historial = Historial::where('dni',$dni)->get();
       $odontograma = Odontograma::where('dni',$dni)->get();
       $odon = Odontograma::where('dni',$dni)->pluck('idOdontograma');
 
       $det = DetalleOdontograma::whereIn('idOdontograma',$odon)->get();
-      
+
 
 
       $odontograma_paciente = DB::table('pacientes')
@@ -301,19 +301,25 @@ class HomeController extends Controller
                 ->join('detalle_odontogramas', 'pacientes.dni', '=', 'detalle_odontogramas.dni')
                 ->select('pacientes.*', 'detalle_odontogramas.*')->where('detalle_odontogramas.dni',$dni)
                 ->get();
-      /*foreach($odontograma as $odo) 
-          
-          foreach($det as $detalle) { 
+
+      $concepto_atencion = DB::table('pacientes')
+                ->join('detalle_odontogramas', 'pacientes.dni', '=', 'detalle_odontogramas.dni')
+                ->select('pacientes.dni', 'detalle_odontogramas.concepto', 'detalle_odontogramas.precio', 'detalle_odontogramas.created_at')->where('detalle_odontogramas.dni',$dni)
+                ->get();
+
+      /*foreach($odontograma as $odo)
+
+          foreach($det as $detalle) {
               if($odo->idOdontograma == $detalle->idOdontograma){
                 $detalle->concepto ; $detalle->precio;
               }
               else
               {
 
-              }        
-          }        
+              }
+          }
       }*/
-      
+
 
         $pdf = new PDF();
         $pdf->AliasNbPages();
@@ -349,7 +355,7 @@ class HomeController extends Controller
         $pdf->SetFont('Times','B',12);
         $pdf->Cell(50,20,iconv('UTF-8', 'ISO-8859-2','HISTORIALES ODONTOLÓGICOS'),0,0,'');
         $pdf->Ln(5);
-        
+
         foreach($odontograma_paciente as $odonto)
         {
           $pdf->SetFont('Times','B',10);
@@ -361,24 +367,40 @@ class HomeController extends Controller
 
           $pdf->setX(20);
           $pdf->Ln(-4);
-          
 
-          $pdf->Ln(0);
+
+          $pdf->Ln(20);
 
         }
 
-        foreach($costo_odontograma as $costo)
+        /*foreach($costo_odontograma as $costo)
         {
           $pdf->SetFont('Times','B',10);
           $pdf->Cell(50,20,iconv('UTF-8', 'ISO-8859-2','Costo:'),0,0,'');
           $pdf->Cell(0,20,utf8_decode($costo->precio),0,1);
           $pdf->Ln(12);
           $pdf->Ln(-4);
-          
+
           $pdf->Ln(0);
 
-        }
+        }*/
 
+        foreach($concepto_atencion as $concep)
+        {
+
+          $pdf->SetFont('Times','B',10);
+          $pdf->Cell(30,20,iconv('UTF-8', 'ISO-8859-2','Concepto:'),1,0,'');
+          $pdf->Cell(0,20,utf8_decode($concep->concepto),1,1);
+          $pdf->Cell(30,20,iconv('UTF-8', 'ISO-8859-2','precio:'),1,0,'');
+          $pdf->Cell(0,20,utf8_decode($concep->precio),1,1);
+          $pdf->Cell(50,20,iconv('UTF-8', 'ISO-8859-2','Fecha de procedimiento:'),1,0,'');
+          $pdf->Cell(0,20,utf8_decode($concep->created_at),1,1);
+          $pdf->Ln(12);
+          $pdf->Ln(2);
+
+          $pdf->Ln(12);
+
+        }
 
         $pdf->Output();
     }

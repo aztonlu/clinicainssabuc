@@ -25,8 +25,8 @@ class BusquedaController extends Controller
       $status = $request->status;
       if ($request->ajax())
       {
-          
-        
+
+
             if($status == "dni")
             {
               $pacientes = Paciente::where('dni','LIKE','%'.$request->search.'%')->get();
@@ -35,7 +35,7 @@ class BusquedaController extends Controller
               $pacientes = Paciente::where('apPaterno','LIKE','%'.$request->search.'%')->get();
             }
 
-          
+
 
           if($pacientes)
           {
@@ -78,8 +78,8 @@ class BusquedaController extends Controller
       $status = $request->status;
       if ($request->ajax())
       {
-          
-        
+
+
             if($status == "dni")
             {
               $pacientes = Paciente::where('dni','LIKE','%'.$request->search.'%')->get();
@@ -298,7 +298,7 @@ class BusquedaController extends Controller
         $dt= $carbon::now();
         $ma = $dt->addDay();
         $hoy =$ma->toDateString();
-           
+
          $pacientes = DB::table('pacientes')
                     ->join('citas', 'pacientes.dni', '=', 'citas.idPaciente')
                     ->select('pacientes.*', 'citas.fechaCita','citas.estado','citas.idCita')->where('citas.fechaCita',$hoy)
@@ -344,9 +344,9 @@ class BusquedaController extends Controller
       $fecha = $request->fecha;
       if ($request->ajax())
       {
-        
+
         $hoy =$fecha;
-           
+
          $pacientes = DB::table('pacientes')
                     ->join('citas', 'pacientes.dni', '=', 'citas.idPaciente')
                     ->select('pacientes.*', 'citas.fechaCita','citas.estado','citas.idCita')->where('citas.fechaCita',$hoy)->where('citas.lugar',Auth::user()->lugar)
@@ -395,7 +395,7 @@ class BusquedaController extends Controller
         $dt= $carbon::now();
         $ma = $dt->addDay();
         $hoy =$ma->toDateString();
-           
+
          $pacientes = DB::table('pacientes')
                     ->join('citas', 'pacientes.dni', '=', 'citas.idPaciente')
                     ->select('pacientes.*', 'citas.fechaCita','citas.estado','citas.idCita')->where('citas.fechaCita',$hoy)->where('citas.lugar',Auth::user()->lugar)
@@ -444,9 +444,9 @@ class BusquedaController extends Controller
         $dt= $carbon::now();
         $hoy =$dt->toDateString();
         $semana = $dt->addWeek();
-        
+
         $semana1 =$semana->toDateString();
-           
+
          $pacientes = DB::table('pacientes')
                     ->join('citas', 'pacientes.dni', '=', 'citas.idPaciente')
                     ->select('pacientes.*', 'citas.fechaCita','citas.estado','citas.idCita')->whereBetween('citas.fechaCita',[$hoy,$semana1])->where('citas.lugar',Auth::user()->lugar)->orderBy('citas.fechaCita', 'asc')
@@ -495,9 +495,9 @@ class BusquedaController extends Controller
         $dt= $carbon::now();
         $hoy =$dt->toDateString();
         $semana = $dt->addWeek();
-        
+
         $semana1 =$semana->toDateString();
-           
+
          $pacientes = DB::table('pacientes')
                     ->join('citas', 'pacientes.dni', '=', 'citas.idPaciente')
                     ->select('pacientes.*', 'citas.fechaCita','citas.estado','citas.idCita')->whereBetween('citas.fechaCita',[$hoy,$semana1])->orderBy('citas.fechaCita', 'asc')
@@ -546,7 +546,7 @@ class BusquedaController extends Controller
         //$carbon = new \Carbon\Carbon();
         //$dt= $carbon::now();
         $hoy =$fecha;
-           
+
          $pacientes = DB::table('pacientes')
                     ->join('citas', 'pacientes.dni', '=', 'citas.idPaciente')
                     ->select('pacientes.*', 'citas.fechaCita','citas.estado','citas.idCita')->where('citas.fechaCita',$hoy)
@@ -673,7 +673,7 @@ class BusquedaController extends Controller
     {
       $pacientes = Paciente::paginate(10);
       return view('odontograma', ['pacientes' => $pacientes]);
-      
+
     }
     public function prueba(Request $request)
     {
@@ -682,20 +682,23 @@ class BusquedaController extends Controller
       $conceptos = DetalleOdontograma::where('idOdontograma',$id)->get();
       $cuentas = Cuenta::where('idOdontograma',$id)->get();
       $deuda = Cuenta::where('idOdontograma',$id)->orderBy('id','DESC')->value('deuda');
+      //aqui agrego fecha
+      $fecha = DetalleOdontograma::where('idOdontograma',$id)->get();
+      //hasta aqui
       if(is_null($odontograma))
       {
         $odontograma = 'img/odontograma.jpg';
       }
       $dni = Paciente::where('dni',$request->dni)->get();
-      return view('html5')->with('pacientes',$dni)->with('odontogramas',$odontograma)->with('conceptos',$conceptos)->with('idOdontograma',$id)->with('cuentas',$cuentas)->with('deuda',$deuda);
-      
+      return view('html5')->with('pacientes',$dni)->with('odontogramas',$odontograma)->with('conceptos',$conceptos)->with('idOdontograma',$id)->with('cuentas',$cuentas)->with('deuda',$deuda)->with('created_at',$fecha);
+
     }
     public function nuevoOdontograma(Request $request)
     {
       $odontograma = 'img/odontograma.jpg';
       $id = Odontograma::where('dni',$request->dni)->orderBy('idOdontograma','DESC')->value('idOdontograma');
       //$conceptos = DetalleOdontograma::where('idOdontograma',$id)->get();
-      
+
       $dni = Paciente::where('dni',$request->dni)->get();
       return view('html5')->with('pacientes',$dni)->with('odontogramas',$odontograma)->with('conceptos',"concepto_vacio")->with('cuentas',"cuenta_vacio")->with('deuda',"deuda_vacia");;
     }
@@ -710,7 +713,7 @@ class BusquedaController extends Controller
       $nombre = 'examenes/'.$random.'.png';
       $image = Image::make($imagen)->resize(435, 350);
       $image->insert($texto,'top-left');
-      
+
       $image->save($nombre);
       /*$examen = new Odontograma;
       $examen->imagen = $nombre;
@@ -718,13 +721,13 @@ class BusquedaController extends Controller
       $examen->save();*/
       Odontograma::where('idOdontograma', $request->idOdontograma)->update(['imagen' => $nombre]);
 
-      
+
       $id = $request->idOdontograma;
       $countConcepto = count($request->concepto);
       $concepto = $request->concepto;
       $precio = $request->precio;
 
-      for ($i=0; $i < $countConcepto ; $i++) { 
+      for ($i=0; $i < $countConcepto ; $i++) {
           $detalle = new DetalleOdontograma;
           $detalle->concepto = $concepto[$i];
           $detalle->precio = $precio[$i];
@@ -737,8 +740,8 @@ class BusquedaController extends Controller
       $deuda = $request->deuda;
       $cuenta = $request->cuenta;
       $totalcuenta = $deuda - $cuenta;
-      
-      
+
+
       $detalle = new Cuenta;
       $detalle->deuda = $totalcuenta;
       $detalle->cuenta = $cuenta;
@@ -746,7 +749,7 @@ class BusquedaController extends Controller
       $detalle->fecha = $request->fechaCuenta;
       //$detalle->dni = $request->dni;
       $detalle->save();
-      
+
       return Redirect::action('BusquedaController@odontograma');
     }
     public function insertarOdontograma(Request $request)
@@ -760,20 +763,20 @@ class BusquedaController extends Controller
       $nombre = 'examenes/'.$random.'.png';
       $image = Image::make($imagen)->resize(435, 350);
       $image->insert($texto,'top-left');
-      
+
       $image->save($nombre);
       $examen = new Odontograma;
       $examen->imagen = $nombre;
       $examen->dni = $request->dni;
       $examen->save();
 
-      
+
       $id = Odontograma::latest()->value('idOdontograma');
       $countConcepto = count($request->concepto);
       $concepto = $request->concepto;
       $precio = $request->precio;
 
-      for ($i=0; $i < $countConcepto ; $i++) { 
+      for ($i=0; $i < $countConcepto ; $i++) {
           $detalle = new DetalleOdontograma;
           $detalle->concepto = $concepto[$i];
           $detalle->precio = $precio[$i];
@@ -783,12 +786,12 @@ class BusquedaController extends Controller
       }
 
       //guardar costos aqui
-      
+
       $deuda = $request->deuda;
       $cuenta = $request->cuenta;
       $totalcuenta = $deuda - $cuenta;
-      
-      
+
+
       $detalle = new Cuenta;
       $detalle->deuda = $totalcuenta;
       $detalle->cuenta = $cuenta;
@@ -796,17 +799,17 @@ class BusquedaController extends Controller
       $detalle->fecha = $request->fechaCuenta;
       //$detalle->dni = $request->dni;
       $detalle->save();
-      
-      
+
+
       return Redirect::action('BusquedaController@odontograma');
     }
     public function detalleOdontograma(Request $request)
     {
-      
-      
+
+
       $odon = Odontograma::where('dni',$request->dni)->get();
       $det = DetalleOdontograma::where('dni',$request->dni)->get();
-      
+
       return view('detalleOdontograma')->with('odontogramas',$odon)->with('detalles',$det);
     }
     public function searchHistorial(Request $request)
@@ -931,7 +934,7 @@ class BusquedaController extends Controller
                                 '<td>'.$pacientes[$i]->fechaHistorial.'</td>'.
                                 '<td>'.$pacientes[$i]->diagnostico.'</td>'.
                                 '<td>'.$pacientes[$i]->tratamiento.'</td>'.
-                                 
+
                             '</tr>';
 
               }
@@ -1023,5 +1026,5 @@ class BusquedaController extends Controller
           }
       }
     }
-    
+
 }

@@ -20,7 +20,6 @@
 <body>
 
 @foreach ($pacientes as $paciente)
-  <!--asignamos si es mujer o varon para el icono-->
   @if($paciente->sexo == "Masculino")
     <ul class="list-inline">
       <li>
@@ -41,7 +40,6 @@
       </li>
     </ul>
   @endif
-  <!--aqui muere la asignacion de sexo-->
 
   @if($conceptos == "concepto_vacio")
     <form method="POST" action="insertarOdontograma" enctype="multipart/form-data" id="formulario">
@@ -51,7 +49,6 @@
       {{ csrf_field() }}
       <input type="hidden" name="idOdontograma" value="{{ $idOdontograma }}">
   @endif
-  <!--en la siguiente vertical añadimos los botones-->
       <div class="col-sm-12">
         <div class="col-sm-6">
           <canvas id="canvas" width=435 height=350></canvas><br>
@@ -62,99 +59,12 @@
           <button type="button" id="penGreen"></button>
           <button type="button" id="eraser"></button>
           <button type="button" id="save" onclick="canvasToImg()"></button>
-        </div>
-        <!--en la siguiente columna añadimos los campos de concepto, costo y boton de añadir-->
-        <div class="col-sm-6">
-          <ul class="list-inline">
-            <li>
-              <h5>Concepto:</h5>
-              <input type="text" name="concepto" id="concepto" value="">
-            </li>
-            <li>
-              <h5>Costo:</h5>
-              <input type="number" name="costo" id="costo">
-            </li>
-            <li>
-              <button type="button" class="btn btn-success" onclick="addConcepto()">+</button>
-              <!--@if($conceptos == "concepto_vacio")
 
-              @else
-              <button type="button" class="btn btn-info" data-toggle="modal" data-target="#example" >Ver Concepto</button>
-              @endif-->
-            </li>
-          </ul>
-
-            <table class="table" id="myTable">
-              <thead>
-                <tr>
-                <th>ID</th>
-                <th>Concepto</th>
-                <th>Costo</th>
-              </tr>
-              </thead>
-              <tbody id="cuerpoTabla">
-
-              </tbody>
-            </table>
-            <ul class="list-inline">
-              <li>
-                <h5>Costo de la sesión:</h5>
-              </li>
-              <li>
-                <input type="text" name="total" id="total" value="0">
-              </li>
-            </ul>
-
-                  @if($conceptos == "concepto_vacio")
-                @else
-                  @if(count($conceptos) == 0)
-                      <center><h5>No existen pagos previos</h5></center>
-                @else
-                  <table class="table" id="myTable">
-                  <thead>
-                    <tr>
-
-                    <th>Concepto</th>
-                    <th>precio</th>
-                  </tr>
-                  </thead>
-                  @foreach($conceptos as $concepto)
-                  <tbody>
-
-                      <td>{{ $concepto->concepto }}</td>
-                      <td>{{ $concepto->precio }}</td>
-
-
-                  </tbody>
-                  @endforeach
-                  <!--este es el listado del arreglo precio-->
-
-                  @foreach($conceptos as $costofinal)
-
-                  {{$costofinal->precio}}
-                  @endforeach
-                  <!--hasta aqui-->
-                </table>
-                    @endif
-                @endif
-                @if(count($deuda) > 0)
-                <th>Deuda a la fecha</th>
-                  <input type="text" name="deuda" id="deuda" value="{{ $deuda }}">
-                @endif
-            <img src="" id="imgC" name="imgC" >
-            <input type="hidden" name="image" value="{{ $odontogramas }}">
-            <input type="hidden" name="texto64" id="texto64">
-            <input type="hidden" name="dni" id="dni" class="total" value="{{ $paciente->dni }}">
-
-        </div>
-        <!--aqui termina la columna de costos-->
-      </div>
-      <div class="col-sm-6">
           <ul class="list-inline">
             <li>
               <h5>Deuda:</h5>
               @if($deuda == "deuda_vacia")
-                <input type="text" name="deuda" id="deuda">
+                <input type="text" name="deuda" id="deuda" value="0">
               @else
                 @if(count($deuda) > 0)
                   <input type="text" name="deuda" id="deuda" value="{{ $deuda }}">
@@ -173,34 +83,13 @@
               <input type="text" name="fechaCuenta" id="fechaCuenta">
             </li>
             <li>
-              <!--<button type="button" class="btn btn-success" id="buttonCalculate" onclick="addDeuda()">+</button>-->
+              <button type="button" class="btn btn-success" id="buttonCalculate" onclick="addDeuda()">+</button>
               @if($cuentas == "cuenta_vacio")
               @else
-              <!--<button type="button" class="btn btn-warning" data-toggle="modal" data-target="" >Ver Costos</button>-->
-                  <table class="table" id="myTable">
-                  <thead>
-                    <tr>
-
-                    <th>Deuda a la fecha</th>
-                    <th>Dejo a Cuenta</th>
-                    <th>Fecha</th>
-                  </tr>
-                  </thead>
-                  @foreach($cuentas as $cuenta)
-                  <tbody>
-
-                      <td>{{ $cuenta->deuda }}</td>
-                      <td>{{ $cuenta->cuenta }}</td>
-                      <td>{{ $cuenta->fecha }}</td>
-
-                  </tbody>
-                  @endforeach
-                </table>
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#example1" >Ver Costos</button>
               @endif
             </li>
           </ul>
-
-
           <!--<table class="table" id="tabla2">
             <thead>
               <tr>
@@ -212,14 +101,145 @@
 
             </tbody>
           </table>-->
-          <!--<ul class="list-inline">
+          <ul class="list-inline">
             <li>
               <h5>Total Deuda:</h5>
             </li>
             <li>
               <input type="text" name="totaldeuda" id="totaldeuda" value="0">
             </li>
-          </ul>-->
+          </ul>
+
+
+          <!--aqio agregamos el modal de deuda-->
+          @if($cuentas == "cuenta_vacio")
+          @else
+            @if(count($cuentas) == 0)
+                <center><h5>No existen pagos previos</h5></center>
+          @else
+            <table class="table" id="myTable">
+            <thead>
+              <tr>
+
+
+              <th>Dejo a Cuenta</th>
+              <th>Deuda a la fecha</th>
+              <th>Fecha</th>
+            </tr>
+            </thead>
+            @foreach($cuentas as $cuenta)
+            <tbody>
+
+
+                <td>{{ $cuenta->cuenta }}</td>
+                <td>{{ $cuenta->deuda }}</td>
+                <td>{{ $cuenta->fecha }}</td>
+
+            </tbody>
+            @endforeach
+          </table>
+              @endif
+          @endif
+          <!--hasta aqui-->
+
+
+        </div>
+        <div class="col-sm-6">
+          <ul class="list-inline">
+            <li>
+              <h5>Concepto:</h5>
+              <input type="text" name="concepto" id="concepto">
+            </li>
+            <li>
+              <h5>Costo:</h5>
+              <input type="number" name="costo" id="costo">
+            </li>
+            <li>
+              <button type="button" class="btn btn-success" onclick="addConcepto()">+</button>
+              @if($conceptos == "concepto_vacio")
+
+              @else
+              <button type="button" class="btn btn-info" data-toggle="modal" data-target="#example" >Ver Concepto</button>
+              @endif
+            </li>
+          </ul>
+
+            <table class="table" id="myTable">
+              <thead>
+                <tr>
+                <th>ID</th>
+                <th>Concepto</th>
+                <th>Costo</th>
+              </tr>
+              </thead>
+              <tbody id="cuerpoTabla">
+
+              </tbody>
+            </table>
+            <ul class="list-inline">
+              <li>
+                <h5>Total de la sesión:</h5>
+              </li>
+              <li>
+                <input type="text" name="total" id="total" value="0">
+              </li>
+              <!--este es el listado del arreglo precio-->
+
+                <!--@foreach($conceptos as $costofinal)
+                {{$costofinal->precio}}
+                @endforeach-->
+                <!--hasta aqui-->
+
+              <!--aqui ponemos el modal-->
+              @if($conceptos == "concepto_vacio")
+              @else
+                @if(count($conceptos) == 0)
+                    <center><h5>No existen pagos previos</h5></center>
+              @else
+                <table class="table" id="myTable">
+                <thead>
+                  <tr>
+
+                  <th>Concepto</th>
+                  <th>precio</th>
+                  <!--<th>fecha</th>-->
+                </tr>
+                </thead>
+                @foreach($conceptos as $concepto)
+                <tbody>
+
+                    <td>{{ $concepto->concepto }}</td>
+                    <td>{{ $concepto->precio }}</td>
+                    <!--<td>{{ $concepto->fecha }}</td>-->
+
+
+
+                </tbody>
+                @endforeach
+              </table>
+                  @endif
+              @endif
+              <!--hasta aqui-->
+              <br>
+              @if(count($deuda) > 0)
+              <li>
+              <th>Deuda a la fecha</th>
+                <input type="text" name="deuda" id="deuda" value="{{ $deuda }}">
+                </li>
+              @endif
+              
+
+            </ul>
+            <img src="" id="imgC" name="imgC" >
+            <input type="hidden" name="image" value="{{ $odontogramas }}">
+            <input type="hidden" name="texto64" id="texto64">
+            <input type="hidden" name="dni" id="dni" class="total" value="{{ $paciente->dni }}">
+
+        </div>
+      </div>
+      <div class="col-sm-12">
+          <br><br><br><br><br><br>
+
       </div>
   </form>
   <!-- Modal -->
